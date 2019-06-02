@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+{% for article in articles %}
+<h1>{{article.titre}}</h1>
+<div class="articles " style="border: 2px solid black">
+<img src={{article.image}} alt="">
+<p>publié le {{ article.createdAt | date('d/m/Y')}}</p>
+<h2>{{article.titre}}</h2>
+
+<p><b>Difficulté : </b>{{article.difficulte}}</p>
+<p><b>Préparation : </b>{{article.preparation}}</p>
+<p><b>Cuisson : </b>{{article.cuisson}}</p>
+<p><b>Ingrédients : </b>{{article.ingredients}}</p>
+<h4>Recette</h4>
+<p>{{article.recette}}</p>
+
+</div>
+{% endfor %}
+ <a href="{{path('recettes')}}" class="btn btn-primary">Revenir en arrière</a>
+
+{% endblock %}
