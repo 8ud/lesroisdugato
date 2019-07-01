@@ -91,7 +91,7 @@ class BlogController extends AbstractController
     $form->handleRequest($request);
 
    if($form->isSubmitted() && $form->isValid()) {
-         
+
 
          $manager->persist($article);
          $manager->flush();
