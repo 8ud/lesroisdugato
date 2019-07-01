@@ -29,8 +29,12 @@ class BlogController extends AbstractController
 
      // render : fichier twig a afficher
     public function home() {
+
+   //   $article= $this->getDoctrine()->getRepository(Article::class)->findSomeRecipe();
+
        return $this->render('blog/home.html.twig', [
-           'title' => "Les Rois Du Gato"
+           'title' => "Les Rois Du Gato",
+         //  'article'=>$article
            ]);
     }
 
@@ -45,19 +49,19 @@ class BlogController extends AbstractController
       $articles = $repo->findAll();
 
         return $this->render('blog/allRecipe.html.twig', [
-         'title' => "Toutes les recettes", 'articles' => $articles
+         'title' => "Toutes les recettes",
+         'articles' => $articles
         ]);
 
         }
           /** 
-     * @route("/recette/1", name="recette") 
+     * @route("/recette/{id}", name="recette") 
      */
- function showRecipe()
- {
+   public function showRecipe($id){
 
    $repo = $this->getDoctrine()->getRepository(Article::class);
-
-   $articles = $repo->findAll();
+   
+   $articles = $repo->find($id);
 
      return $this->render('blog/showRecipe.html.twig', [
       'articles' => $articles
@@ -99,5 +103,5 @@ class BlogController extends AbstractController
      ]);
  }
 
- 
+
 }

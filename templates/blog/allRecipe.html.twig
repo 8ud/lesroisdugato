@@ -8,19 +8,19 @@
 {% block body %}
 <h1>{{title}}</h1>
 
+<div style="display : flex ; flex-wrap : wrap ">
  {% for article in articles %}
-<div style="display : flex ">
       <div class="card" style="width: 18rem;">
-         <img src={{article.image}} class="card-img-top" alt="...">
+         <img src="{{article.image}}" class="card-img-top" alt="...">
          <div class="card-body">
             <h5 class="card-title">{{ article.titre }}</h5>
             <p class="card-text">Difficulté : {{ article.difficulte }}</p>
-            <a href={{ path('recette') }} class="btn btn-primary">Lire la Suite</a>
+            <a href={{ path('recette' , { 'id' : article.id }) }} class="btn btn-primary">Lire la Suite</a>
          </div>
       </div>
 {% endfor %} 
 
-<div class="card" style="width: 18rem; ">
+{# <div class="card" style="width: 18rem; ">
 <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="...">
 <div class="card-body">
 <h5 class="card-title">{Titre Recette}</h5>
@@ -36,7 +36,8 @@
 <p class="card-text">Difficulté : {difficutlté}</p>
 <a href={{ path('recette') }} class="btn btn-primary">Lire la Suite</a>
 </div>
-</div></div>
+</div> #}
+</div>
 
 
 {% endblock %}
