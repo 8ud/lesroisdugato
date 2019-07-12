@@ -15,7 +15,7 @@ class ArticleFixtures extends Fixture
                $article->setTitre("Gateaux $i")
                            ->setDifficulte("facile")
                            ->setCreatedAt(new \DateTime())
-                           ->setModifiedAt(new \DateTime())
+                           ->setModifiedAt(null)
                            ->setImage("https://loremflickr.com/300/200/cake")
                            ->setIngredients("<p>3oeuf, 200g de farine, 100g de sucre</p>")
                            ->setPreparation("20 min")

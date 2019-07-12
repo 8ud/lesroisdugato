@@ -26,12 +26,17 @@
                <a class="nav-link" href="{{path('home')}}">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-               <a class="nav-link" href="{{path('new')}}">Créer Recette</a>
+               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false">Gestion des  Recettes</a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="{{path('new')}}">Créer Recette</a>
+                  <a class="dropdown-item" href="{{path('edit')}}">Editer les Recettes</a>
+             </div>
             </li>
             <li class="nav-item dropdown">
                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                   aria-haspopup="true" aria-expanded="false">
-                  Recettes
+                Trouver  Recettes
                </a>
                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                   <a class="dropdown-item" href="#">Nouvelles Recettes</a>
@@ -39,7 +44,7 @@
                   <a class="dropdown-item" href="{{path('recettes')}}">Toutes les Recettes</a>
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                      aria-haspopup="true" aria-expanded="false">
-                     Difficulté
+                   Par Difficulté
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                      <a class="dropdown-item" href="#">Facile</a>

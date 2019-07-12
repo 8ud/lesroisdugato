@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+{% block title %}edit{% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+
+{% block body %}
+<h1>{{title}}</h1>
+
+<div style="display : flex ; flex-wrap : wrap ">
+ {% for article in articles %}
+      <div class="card" style="width: 25rem; margin:30px">
+         <img src="{{article.image}}" class="card-img-top" alt="...">
+         <div class="card-body">
+            <h5 class="card-title">{{ article.titre }}</h5>
+            <p class="card-text">Difficulté : {{ article.difficulte }}</p>
+            <a href={{ path('update' , { 'id' : article.id }) }} class="btn btn-primary">Modifier</a>
+             <a id='confirm'{#} data-content='{{ render(controller('App\\Controller\\BlogController:confirmDelete', {'id':article.id})) }}' #} type="button" data-toggle="modal" data-target="#confirModal" class="btn btn-danger">Supprimer</a>  
+             {# <button   type="button" data-toggle="modal" data-target="#confirModal" class="btn btn-danger">Supprimer</button>  #}
+         </div>
+      </div>
+ 
+    <!-- Modal -->
+     <div class="modal fade" id="confirModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+       <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title" id="exampleModalLabel">Êtes-vous sûr de vouloir supprimer {{ article.titre }} ?</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+               </button>
+             </div>
+             <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">Non</button>
+                  <a href="{{ path('delete', { 'id' : article.id }) }}" type="button" class="btn btn-danger">Oui</a>
+            </div>
+         </div>
+      </div>
+    </div> 
+
+{% endfor %}
+
+{% endblock %}

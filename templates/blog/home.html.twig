@@ -3,18 +3,18 @@
   {% block body %}
   <h1>{{title}}</h1>
 
-{#   <div style="display : flex ; flex-wrap : wrap ">
- {% for articles in article %}
-      <div class="card" style="width: 18rem;">
+    <div style="display : flex ; flex-wrap : wrap ">
+ {% for article in articles %}
+      <div class="card col-3" style=" margin:20px">
          <img src="{{article.image}}" class="card-img-top" alt="...">
          <div class="card-body">
-            <h5 class="card-title">{{ articles.titre }}</h5>
-            <p class="card-text">Difficulté : {{ articles.difficulte }}</p>
-            <a href={{ path('recette' , { 'id' : articles.id }) }} class="btn btn-primary">Lire la Suite</a>
+            <h5 class="card-title">{{ article.titre }}</h5>
+            <p class="card-text">Difficulté : {{ article.difficulte }}</p>
+            <a href={{ path('recette' , { 'id' : article.id }) }} class="btn btn-primary">Lire la Suite</a>
          </div>
       </div>
-{% endfor %} 
-</div> #}
+{% endfor %}
+</div> 
   {% endblock %}
 
 
