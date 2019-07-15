@@ -2,13 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Doctrine\Common\Persistence\ObjectManager;
+
 
 use App\Entity\Article;
 
@@ -76,7 +79,7 @@ class BlogController extends AbstractController
      *
      * @route("/new", name="new") 
      */
- function create(Request $request, ObjectManager $manager){
+   public function create(Request $request, ObjectManager $manager){
 
    
    // on crée  un article
@@ -86,6 +89,10 @@ class BlogController extends AbstractController
                         ->add('titre')
                         ->add('difficulte')
                         ->add('image')
+                        ->add('category', EntityType::class, [
+                              'class'=> Category::class,
+                              'choice_label' => 'title'
+                        ])
                         ->add('ingredients')
                         ->add('preparation')
                         ->add('cuisson')

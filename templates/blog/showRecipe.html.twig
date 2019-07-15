@@ -3,8 +3,10 @@
 {% block body %}
 
 <h1>{{articles.titre}}</h1>
-<div class="articles " style="border: 2px solid black">
-<img src={{articles.image}} alt="">
+<div class="articles " style="border: 2px solid black; padding: 15px">
+<div style="text-align:center">
+   <img  src={{articles.image}} alt="">
+</div>
 <p>publié le {{ articles.createdAt | date('d/m/Y')}}</p>
 <h2>{{articles.titre}}</h2>
 
@@ -16,7 +18,27 @@
 <p>{{articles.recette | raw}}</p>
 
 </div>
+<br/>
+ <span style="margin:20px">
+    <a href="{{path('recettes')}}" class="btn btn-primary">Revenir aux articles</a>
+ </span>
+ <span style="margin:20px">
+    <a href="{{path('comment')}}" class="btn btn-info">Ecrire un Commentaire</a>
+ </span>
 
- <a href="{{path('recettes')}}" class="btn btn-primary">Revenir aux articles</a>
 
+ <h3 style="margin:20px">Commentaires :</h3>
+{% for comment in articles.comments %}
+   <section id="commentaires">
+      <div class="row">
+         <div class="col-3">
+            {{comment.author}} (<small class="text-danger">{{comment.createdAt | date('d/m/Y à H:i')}}</small>)
+         </div>
+         <div class="col text-success">
+            {{comment.content | raw}}
+         </div>
+      </div>
+   
+   </section>
+{% endfor %}
 {% endblock %}
