@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Doctrine\Common\Persistence\ObjectManager;
 
 
@@ -20,15 +21,20 @@ class CommentController extends AbstractController
   /**
        * @route("/comment", name="comment") 
      */
-    public function createComment(Request $request, ObjectManager $manager){
+    public function createComment(Request $request, ObjectManager $manager, $article){
 
+         // on recupère l'id de l'article
+         $repo = $this->getDoctrine()->getRepository(Comment::class);
+   
+          $article = $repo->find($article);
    
       // on crée  un commentaire
       $comment = new Comment();
       //on recupère le formulaire
       $form = $this->createFormBuilder($comment)
                            ->add('author')
-                           ->add('content')
+                           ->add('content', TextareaType::class)
+                           ->add($article)
                            ->getForm();
    
        $form->handleRequest($request);
@@ -46,7 +52,9 @@ class CommentController extends AbstractController
       }
       // on rend la vue
         return $this->render('blog/comment.html.twig', [
-         'title' => "Nouveau commentaire" , 'form' => $form->createView()
+         'title' => "Nouveau commentaire" ,
+          'form' => $form->createView(),
+          'article' => $article
         ]);
     }
 }

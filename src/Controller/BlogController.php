@@ -14,6 +14,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 
 use App\Entity\Article;
+use App\Entity\Comment;
+
 
 class BlogController extends AbstractController
 {
@@ -68,6 +70,7 @@ class BlogController extends AbstractController
    $repo = $this->getDoctrine()->getRepository(Article::class);
    
    $articles = $repo->find($id);
+
 
      return $this->render('blog/showRecipe.html.twig', [
       'articles' => $articles
@@ -214,7 +217,8 @@ dump($article);
       }
 
       return $this->render('blog/delRecipe.html.twig', [
-                'article'   => $article
+                'article'   => $article,
+                'id' => $article->getId()
       ]);
   }
 
