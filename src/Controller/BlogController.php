@@ -71,9 +71,12 @@ class BlogController extends AbstractController
    
    $articles = $repo->find($id);
 
+  
+
 
      return $this->render('blog/showRecipe.html.twig', [
       'articles' => $articles
+     
      ]);
  }
 
@@ -192,7 +195,7 @@ class BlogController extends AbstractController
                   'No product found for id ' . $id
           );
       }
-dump($article);
+//dump($article);
 
       $Manager->remove($article);
       $Manager->flush();
@@ -207,6 +210,7 @@ dump($article);
      * @Route("/confirmDeleteRecipe/{id}", name="confirm")
      */
     public function confirmDelete($id) {
+
       $Manager = $this->getDoctrine()->getManager();
       $article = $Manager->getRepository(Article::class)->find($id);
 

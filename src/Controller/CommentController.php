@@ -19,7 +19,7 @@ class CommentController extends AbstractController
 {
 
   /**
-       * @route("/comment", name="comment") 
+       * @route("/comment/{article}", name="comment") 
      */
     public function createComment(Request $request, ObjectManager $manager, $article){
 
@@ -42,6 +42,7 @@ class CommentController extends AbstractController
        if($form->isSubmitted() && $form->isValid()) {
           
           $comment->setCreatedAt(new \DateTime());
+          $comment->setArticle($article);
           
       // on enregistre le produit dans la base de donnée
             $manager->persist($comment);
