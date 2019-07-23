@@ -2,19 +2,22 @@
 
 namespace App\Controller;
 
-use App\Entity\Category;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Doctrine\Common\Persistence\ObjectManager;
 
 
+use App\Entity\Category;
 use App\Entity\Article;
 use App\Entity\Comment;
+use App\Form\CommentType;
 
 
 class BlogController extends AbstractController
@@ -65,21 +68,48 @@ class BlogController extends AbstractController
           /** 
      * @route("/recette/{id}", name="recette") 
      */
-   public function showRecipe($id){
+   public function showRecipe(Article $articles, Request $request, $id, ObjectManager $manager ){
 
    $repo = $this->getDoctrine()->getRepository(Article::class);
+
+    $articles = $repo->find($id);
+
+   // création du formulaire
+   //  $repo = $this->getDoctrine()->getRepository(Comment::class);
+   // $article = $repo->find($article); 
+
+      // on crée  un commentaire
+      $comment = new Comment();
+      //on recupère le formulaire
+      $form = $this->createForm(CommentType::class, $comment);
+                       
+
+       $form->handleRequest($request);
+       //si le formulaire à été soumis
+       if($form->isSubmitted() && $form->isValid()) {
+
+          $comment->setCreatedAt(new \DateTime()) 
+                           ->setArticle($articles);
+      
+
+      
+          
+      //on enregistre le produit dans la base de donnée
+            $manager->persist($comment);
+            $manager->flush();
    
-   $articles = $repo->find($id);
+         }
 
-  
-
+         
 
      return $this->render('blog/showRecipe.html.twig', [
-      'articles' => $articles
+      'articles' => $articles,
+      'commentForm' => $form->createView()
+   
      
      ]);
- }
-
+}
+   
           /**
      *  @return Response
      *

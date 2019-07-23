@@ -24,10 +24,8 @@ class ArticleRepository extends ServiceEntityRepository
     public function findSomeRecipe()
     {
         return $this->createQueryBuilder('a')                     
-                          ->setMaxResults(5)
                           ->getQuery()
-                          ->getResult()
-                            ;
+                          ->getResult();
     }
 
     // /**

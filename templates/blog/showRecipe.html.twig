@@ -22,14 +22,11 @@
  <span style="margin:20px">
     <a href="{{path('recettes')}}" class="btn btn-primary">Revenir aux articles</a>
  </span>
- <span style="margin:20px">
-    <a href="" class="btn btn-info">Ecrire un Commentaire</a>
- </span>
+{
 
-
- <h3 style="margin:20px">Commentaires :</h3>
-{% for comment in articles.comments %}
    <section id="commentaires">
+ <h3 style="margin:20px">{{ articles.comments | length }} Commentaire(s) :</h3>
+{% for comment in articles.comments %}
       <div class="row">
          <div class="col-3">
             {{comment.author}} (<small class="text-danger">{{comment.createdAt | date('d/m/Y à H:i')}}</small>)
@@ -37,8 +34,22 @@
          <div class="col text-success">
             {{comment.content | raw}}
          </div>
-      </div>
-   
+      </div>   
    </section>
 {% endfor %}
+
+
+{{ form_start(commentForm)}}
+  <div class="my-custom-class-for-errors">
+        {{ form_errors(commentForm) }}
+    </div> 
+
+    
+            {{ form_row(commentForm.author, {'label': 'Auteur'}) }}
+     
+            {{ form_row(commentForm.content, {'label':'Commentaire'}) }}
+   
+{# {{ form_widget(form)}} #}
+    <button type="submit" class="btn btn-primary">Ajouter commentaire</button>
+    {{ form_end(commentForm)}}
 {% endblock %}
