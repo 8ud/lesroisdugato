@@ -19,11 +19,11 @@ class ArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, Article::class);
     }
 
-     
-    
+
+
     public function findSomeRecipe()
     {
-        return $this->createQueryBuilder('a')                     
+        return $this->createQueryBuilder('a')
                           ->getQuery()
                           ->getResult();
     }

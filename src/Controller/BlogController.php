@@ -12,10 +12,12 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 
 use App\Entity\Category;
 use App\Entity\Article;
+use App\Entity\User;
 use App\Entity\Comment;
 use App\Form\CommentType;
 
@@ -33,23 +35,27 @@ class BlogController extends AbstractController
     }
 
     // indique le nom de la route grace à l'annotation(@)
-    /** 
-     * @route("/", name="home") 
+
+    /**
+     * @route("/", name="home")
      */
 
      // render : fichier twig a afficher
     public function home() {
 
+      $user =$this-> getUser()->getUsername();
+      dump($user);
       $articles= $this->getDoctrine()->getRepository(Article::class)->findSomeRecipe();
 
        return $this->render('blog/home.html.twig', [
            'title' => "Les Rois Du Gato",
-           'articles'=>$articles
+           'articles'=>$articles,
+           'user'=>$user
            ]);
     }
 
-     /** 
-     * @route("/recettes", name="recettes") 
+     /**
+     * @route("/recettes", name="recettes")
      */
     public function allRecipe()
     {
@@ -65,59 +71,60 @@ class BlogController extends AbstractController
 
         }
 
-          /** 
-     * @route("/recette/{id}", name="recette") 
+          /**
+     * @route("/recette/{id}", name="recette")
      */
-   public function showRecipe(Article $articles, Request $request, $id, ObjectManager $manager ){
+   public function showRecipe(Article $articles, Request $request, $id, ObjectManager $manager){
 
    $repo = $this->getDoctrine()->getRepository(Article::class);
 
     $articles = $repo->find($id);
 
    // création du formulaire
-   //  $repo = $this->getDoctrine()->getRepository(Comment::class);
-   // $article = $repo->find($article); 
+
+  // récupération de l'utilisateur connecté
+$user =$this-> getUser()->getUsername();
 
       // on crée  un commentaire
       $comment = new Comment();
+
+      // on rajoute les informations automatiquement
+      $comment->setCreatedAt(new \DateTime());
+      $comment->setArticle($articles);
+      $comment->setAuthor($user);
+      
       //on recupère le formulaire
       $form = $this->createForm(CommentType::class, $comment);
-                       
 
        $form->handleRequest($request);
        //si le formulaire à été soumis
+
        if($form->isSubmitted() && $form->isValid()) {
 
-          $comment->setCreatedAt(new \DateTime()) 
-                           ->setArticle($articles);
-      
+          //on enregistre le produit dans la base de donnée
+          $manager->persist($comment);
+          $manager->flush();
 
-      
-          
-      //on enregistre le produit dans la base de donnée
-            $manager->persist($comment);
-            $manager->flush();
-   
+          return $this->redirectToRoute('recette', [ 'id' => $articles->getId()]);
+
          }
 
-         
+
 
      return $this->render('blog/showRecipe.html.twig', [
       'articles' => $articles,
       'commentForm' => $form->createView()
-   
-     
+
+
      ]);
 }
-   
+
           /**
-     *  @return Response
-     *
-     * @route("/new", name="new") 
+     * @route("/new", name="new")
      */
    public function create(Request $request, ObjectManager $manager){
 
-   
+
    // on crée  un article
    $article = new Article();
    //on recupère le formulaire
@@ -138,24 +145,24 @@ class BlogController extends AbstractController
     $form->handleRequest($request);
     // si le formulaire à été soumis
     if($form->isSubmitted() && $form->isValid()) {
-       
+
        $article->setCreatedAt(new \DateTime());
-       
+
    // on enregistre le produit dans la base de donnée
          $manager->persist($article);
          $manager->flush();
 
-         return new Response('Article ajouté !');
 
    }
    // on rend la vue
      return $this->render('blog/create.html.twig', [
-      'title' => "Nouvelle Recette" , 'form' => $form->createView()
+      'title' => "Nouvelle Recette" ,
+       'form' => $form->createView()
      ]);
  }
 
- /** 
-     * @route("/edit", name="edit") 
+ /**
+     * @route("/edit", name="edit")
      */
     public function editRecipe()
     {
@@ -178,9 +185,9 @@ class BlogController extends AbstractController
     {
       // on crée  un article
       $repo = $this->getDoctrine()->getRepository(Article::class);
-   
+
    $article = $repo->find($id);
-    
+
       //on recupère le formulaire
       $form = $this->createFormBuilder($article)
                             ->add('titre')
@@ -191,9 +198,9 @@ class BlogController extends AbstractController
                             ->add('cuisson')
                             ->add('recette')
                            ->getForm();
-   
+
        $form->handleRequest($request);
-   
+
        // si le formulaire à été soumis
       if($form->isSubmitted() && $form->isValid()) {
          $article->setModifiedAt(new \DateTime());
@@ -203,9 +210,9 @@ class BlogController extends AbstractController
             $manager->flush();
 
          //   return new Response('Article modifié !');
-   
+
          return $this->redirectToRoute('edit');
-   
+
       }
       // on rend la vue
         return $this->render('blog/updateRecipe.html.twig', [

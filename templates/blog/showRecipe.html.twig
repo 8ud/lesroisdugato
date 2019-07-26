@@ -3,7 +3,7 @@
 {% block body %}
 
 <h1>{{articles.titre}}</h1>
-<div class="articles " style="border: 2px solid black; padding: 15px">
+<div class="articles " style="box-shadow: 5px 5px 5px; padding: 15px; background-color:#e4fef3">
 <div style="text-align:center">
    <img  src={{articles.image}} alt="">
 </div>
@@ -22,34 +22,39 @@
  <span style="margin:20px">
     <a href="{{path('recettes')}}" class="btn btn-primary">Revenir aux articles</a>
  </span>
-{
+
 
    <section id="commentaires">
  <h3 style="margin:20px">{{ articles.comments | length }} Commentaire(s) :</h3>
 {% for comment in articles.comments %}
       <div class="row">
-         <div class="col-3">
-            {{comment.author}} (<small class="text-danger">{{comment.createdAt | date('d/m/Y à H:i')}}</small>)
+         <div class="col-2">
+            {{comment.author}}
          </div>
-         <div class="col text-success">
+         <div class="col-2">(<small class="text-danger">{{comment.createdAt | date('d/m/Y à H:i')}}</small>)
+         </div>
+         <div class="col-5 text-success">
             {{comment.content | raw}}
          </div>
-      </div>   
+      </div>
    </section>
 {% endfor %}
-
-
+<br/>
+<div style="border: 2px solid rgb(120, 194, 173); margin: 20px"></div>
+<br/>
+{% if app.user %}
 {{ form_start(commentForm)}}
   <div class="my-custom-class-for-errors">
         {{ form_errors(commentForm) }}
-    </div> 
+    </div>
 
-    
-            {{ form_row(commentForm.author, {'label': 'Auteur'}) }}
-     
+
             {{ form_row(commentForm.content, {'label':'Commentaire'}) }}
-   
+
 {# {{ form_widget(form)}} #}
     <button type="submit" class="btn btn-primary">Ajouter commentaire</button>
     {{ form_end(commentForm)}}
+    {% else %}
+    <h3>Vous devez être connecté pour ajouter un commentaire</h3>
+    {% endif %}
 {% endblock %}

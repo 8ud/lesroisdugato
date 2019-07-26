@@ -38,7 +38,7 @@ class ArticleFixtures extends Fixture
                   ->setCuisson("30 min")
                   ->setRecette($content)
                   ->setCategory($category);
-                  
+
                   $manager->persist($article);
 
                   // on donne des commentaires à l'article
@@ -48,7 +48,7 @@ class ArticleFixtures extends Fixture
                   $now = new \DateTime();
                   $interval = $now->diff($article->getCreatedAt());
                   $days = $interval->days;
-                  $mini = '-' . $days . 'days';  
+                  $mini = '-' . $days . 'days';
 
                   $comment ->setAuthor($faker->name)
                                     ->setContent($faker->sentence)
