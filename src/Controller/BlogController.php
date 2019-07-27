@@ -43,14 +43,14 @@ class BlogController extends AbstractController
      // render : fichier twig a afficher
     public function home() {
 
-      $user =$this-> getUser()->getUsername();
-      dump($user);
+      // $user =$this-> getUser()->getUsername();
+      // dump($user);
       $articles= $this->getDoctrine()->getRepository(Article::class)->findSomeRecipe();
 
        return $this->render('blog/home.html.twig', [
            'title' => "Les Rois Du Gato",
            'articles'=>$articles,
-           'user'=>$user
+         //   'user'=>$user
            ]);
     }
 
@@ -83,8 +83,13 @@ class BlogController extends AbstractController
    // création du formulaire
 
   // récupération de l'utilisateur connecté
-$user =$this-> getUser()->getUsername();
+  if(($user =$this->getUser()) !== null){
 
+     $user =$this->getUser()->getUsername();
+  }else {
+     $user= '';
+  }
+dump($user);
       // on crée  un commentaire
       $comment = new Comment();
 
@@ -92,7 +97,7 @@ $user =$this-> getUser()->getUsername();
       $comment->setCreatedAt(new \DateTime());
       $comment->setArticle($articles);
       $comment->setAuthor($user);
-      
+
       //on recupère le formulaire
       $form = $this->createForm(CommentType::class, $comment);
 
